@@ -72,7 +72,7 @@
 <div id="app">
   <header>
     <h1><span>WIG Test-Site Selection</span> - global ranking <span class="tag" id="meta">impartially sourced</span></h1>
-    <div class="sub">The 163 contender sites (top ~150 worldwide + all of India) for a 3-ton electric unmanned WIG demonstrator. Each criterion score is anchored to a cited external human/institutional source (QS, Heritage, WJP, World Port Index, AIS counts, named WIG craft…) and adversarially verified — not an AI's guess. Hard flags apply transparent caps; raw scores remain in the city files.</div>
+    <div class="sub">The 323 contender sites (top ~300 worldwide + all 34 India sites) for a 3-ton electric unmanned WIG demonstrator. Each criterion score is anchored to a cited external human/institutional source (QS, Heritage, WJP, World Port Index, AIS counts, named WIG craft…) and adversarially verified — not an AI's guess. Hard flags apply transparent caps; raw scores remain in the city files.</div>
   </header>
   <div class="layout">
     <aside id="sidebar">
@@ -85,7 +85,7 @@
         </div>
         <div class="ctlrow"><input id="search" placeholder="Search city or country…" autocomplete="off"></div>
         <div class="ctlrow">
-          <button id="vAll" class="vbtn vbtn-on">All 163</button>
+          <button id="vAll" class="vbtn vbtn-on">All 323</button>
           <button id="vTop50" class="vbtn">World top 50</button>
           <button id="vIndia" class="vbtn">India</button>
           <label class="chk" style="margin-left:auto"><input type="checkbox" id="hionly"> High-conf only</label>
@@ -188,7 +188,7 @@ function render(){const r=ranked();r.forEach((e,k)=>e.rank=k+1);const filt=rsel.
     const card=document.createElement('div');card.className='card';card.dataset.i=e.i;
     card.innerHTML=`<div class="rankbubble ${tierClass(e.rank)}">${e.rank}</div><div class="body"><div class="name">${e.s.n} <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${confColor(e.s.conf)}"></span></div><div class="where">${e.s.c} / ${e.s.reg}</div><div class="scorebar"><span class="tot">${e.t.toFixed(2)}</span><span class="mini"><i style="width:${e.t*10}%"></i></span></div></div>`;
     card.onclick=()=>select(e.i);list.appendChild(card);});
-  document.getElementById('meta').textContent=shown+' of 163 shown / human-source verified';}
+  document.getElementById('meta').textContent=shown+' of '+SITES.length+' shown / human-source verified';}
 function select(i){const s=SITES[i];map.flyTo([s.lat,s.lng],12,{duration:1.1});
   setTimeout(()=>{if(markers[i])markers[i].openPopup();},900);
   document.querySelectorAll('.card').forEach(c=>c.classList.toggle('active',+c.dataset.i===i));
