@@ -109,13 +109,13 @@ const CRIT=[{key:"airport",label:"Airport + roads",def:14},{key:"regs",label:"Re
 const KF=[["nearestAirport","Airport"],["quayDepthM","Quay depth"],["craneWarehouse","Crane / warehouse"],["regulator","Regulator"],["protectedStatus","Protected status"],["precedentDetail","WIG precedent"]];
 let weights={};CRIT.forEach(c=>weights[c.key]=c.def);
 const SITES=DATA.ranked.map(r=>DATA.sites[r.id]);
-const map=L.map('map',{worldCopyJump:true,minZoom:2}).setView([25,40],3);
-// Esri World Imagery satellite basemap.
+const map=L.map('map',{worldCopyJump:true,minZoom:2,maxZoom:22,zoomSnap:.5,zoomDelta:.5}).setView([25,40],3);
+// Esri World Imagery satellite basemap — high-res: retina (2x) tiles + native sub-metre imagery to z20, zoomable to 22.
 L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-  {attribution:'Tiles &copy; Esri - Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community', maxNativeZoom:19, maxZoom:19}).addTo(map);
+  {attribution:'Tiles &copy; Esri - Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community', maxNativeZoom:20, maxZoom:22, detectRetina:true, crossOrigin:true}).addTo(map);
 // place labels / borders overlay - EOX OpenStreetMap-derived overlay (also free)
 L.tileLayer('https://tiles.maps.eox.at/wmts/1.0.0/overlay_bright_3857/default/g/{z}/{y}/{x}.png',
-  {maxNativeZoom:16, maxZoom:18, opacity:.85}).addTo(map);
+  {maxNativeZoom:17, maxZoom:22, opacity:.85, detectRetina:true}).addTo(map);
 const markers={};
 const tierClass=r=>r<=10?"t1":r<=25?"t2":"t3",tierColor=r=>r<=10?"#ffcf3f":r<=25?"#7fb2ff":"#9aa7b8";
 const scoreColor=v=>v>=8?"#46d39a":v>=6?"#f3c34a":"#ef6b6b",confColor=c=>c==="high"?"#46d39a":c==="medium"?"#f3c34a":"#ef6b6b";
@@ -189,8 +189,8 @@ function render(){const r=ranked();r.forEach((e,k)=>e.rank=k+1);const filt=rsel.
     card.innerHTML=`<div class="rankbubble ${tierClass(e.rank)}">${e.rank}</div><div class="body"><div class="name">${e.s.n} <span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${confColor(e.s.conf)}"></span></div><div class="where">${e.s.c} / ${e.s.reg}</div><div class="scorebar"><span class="tot">${e.t.toFixed(2)}</span><span class="mini"><i style="width:${e.t*10}%"></i></span></div></div>`;
     card.onclick=()=>select(e.i);list.appendChild(card);});
   document.getElementById('meta').textContent=shown+' of 163 shown / human-source verified';}
-function select(i){const s=SITES[i];map.flyTo([s.lat,s.lng],s.reg==='Caspian'||s.reg==='Europe'?6:7,{duration:.9});
-  setTimeout(()=>{if(markers[i])markers[i].openPopup();},650);
+function select(i){const s=SITES[i];map.flyTo([s.lat,s.lng],12,{duration:1.1});
+  setTimeout(()=>{if(markers[i])markers[i].openPopup();},900);
   document.querySelectorAll('.card').forEach(c=>c.classList.toggle('active',+c.dataset.i===i));
   const ac=document.querySelector(`.card[data-i="${i}"]`);if(ac)ac.scrollIntoView({block:'nearest',behavior:'smooth'});}
 const legend=document.createElement('div');legend.className='legend';
